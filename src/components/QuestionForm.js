@@ -15,35 +15,40 @@ function QuestionForm({ onAddQuestion }) {
       ...formData,
       [event.target.name]: event.target.value,
     });
-  };
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
+
     const newQuestion = {
       prompt: formData.prompt,
       answers: [formData.answer1, formData.answer2, formData.answer3, formData.answer4],
-      correctIndex: parseInt(formData.correctIndex, 10)
+      correctIndex: parseInt(formData.correctIndex, 10),
     };
-    fetch('http://localhost:3000/questions', {
-      method: 'POST',
+    console.log(formData);
+    
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(newQuestion)
+      body: JSON.stringify(newQuestion),
     })
-    .then((resp) => resp.json())
-    .then((addedQuestion) => {
-      onAddQuestion(addedQuestion);
-      setFormData({
-        prompt: "",
-        answer1: "",
-        answer2: "",
-        answer3: "",
-        answer4: "",
-        correctIndex: 0,
-      });
-    })
-  };
+      .then((response) => response.json())
+      .then((addedQuestion) => {
+        onAddQuestion(addedQuestion);
+        setFormData({
+          prompt: "",
+          answer1: "",
+          answer2: "",
+          answer3: "",
+          answer4: "",
+          correctIndex: 0,
+        });
+      })
+      .catch((error) => console.error("Error adding question:", error));
+  }
+
 
   return (
     <section>

@@ -9,34 +9,34 @@ function QuestionItem({ question, onDeleteQuestion, onUpdateQuestion }) {
     </option>
   ));
 
-  function handleClickDelete() {
-    fetch(`http://localhost:3000/questions/${id}`, {
-      method: 'DELETE',
+  function handleDeleteClick() {
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "DELETE",
     })
-    .then((resp) => {
-      if (resp.ok) {
+    .then((response) => {
+      if (response.ok) {
         onDeleteQuestion(id);
       } else {
-        console.error('Failed to delete question:', resp.statusText);
+        console.error("Failed to delete question:", response.statusText);
       }
     })
-    .catch((error) => console.error('Error deleting question:', error));
+      .catch((error) => console.error("Error deleting question:", error));
   }
 
   function handleCorrectAnswerChange(event) {
     const newCorrectIndex = parseInt(event.target.value, 10);
-    fetch(`http://localhost:3000/questions/${id}`, {
-      method: 'PATCH',
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ correctIndex: newCorrectIndex }),
     })
-    .then((resp) => resp.json())
-    .then((updatedQuestion) => {
-      onUpdateQuestion(updatedQuestion);
-    })
-  }
+      .then((response) => response.json())
+      .then((updatedQuestion) => {
+        onUpdateQuestion(updatedQuestion);
+      })
+  }  
 
   return (
     <li>
@@ -46,7 +46,7 @@ function QuestionItem({ question, onDeleteQuestion, onUpdateQuestion }) {
         Correct Answer:
         <select defaultValue={correctIndex}>{options}</select>
       </label>
-      <button onClick={handleClickDelete}>Delete Question</button>
+      <button onClick={handleDeleteClick}>Delete Question</button>
     </li>
   );
 }
